@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace ComparisonOfORMTools.Controllers
 {
@@ -21,11 +22,25 @@ namespace ComparisonOfORMTools.Controllers
 
         public async Task<IActionResult> getOrderSales()
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             var filteredSales = await _context.SalesOrderDetail
                            .Where(s => s.ProductId == 870)
                            .ToListAsync();
 
-            return Ok(filteredSales);
+            stopwatch.Stop();
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+
+            // Create a response object that includes the data and the elapsed time
+            var response = new
+            {
+                ElapsedTimeMilliseconds = elapsedTime.TotalMilliseconds,
+                Data = filteredSales
+                
+            };
+
+            return Ok(response);
         }
     }
 }
