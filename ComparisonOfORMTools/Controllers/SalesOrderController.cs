@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Diagnostics;
 
 namespace ComparisonOfORMTools.Controllers
 {
@@ -19,8 +20,21 @@ namespace ComparisonOfORMTools.Controllers
         public async Task<ActionResult<List<SalesOrderDetail>>> GetAllOrders()
         {
             using var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             var orders = await connection.QueryAsync<SalesOrderDetail>("select *  from Sales.SalesOrderDetail WHERE ProductID=870;");
-            return Ok(orders);
+            stopwatch.Stop();
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+
+            var response = new
+            {
+                ElapsedTimeMilliseconds = elapsedTime.TotalMilliseconds,
+
+                Data = orders
+            };
+
+            return Ok(response);
+           
         } 
     }
 }
