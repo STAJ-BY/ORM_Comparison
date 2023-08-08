@@ -13,6 +13,7 @@
         public int LineTotal { get; set; }
         public Guid rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
+       
 
     }
 }
