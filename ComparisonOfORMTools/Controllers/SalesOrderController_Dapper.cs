@@ -8,10 +8,10 @@ namespace ComparisonOfORMTools.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalesOrderController : ControllerBase
+    public class SalesOrderController_Dapper : ControllerBase
     {
         private readonly IConfiguration _config;
-        public SalesOrderController(IConfiguration config)
+        public SalesOrderController_Dapper(IConfiguration config)
         {
             _config = config;
         }
